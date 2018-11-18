@@ -13,6 +13,9 @@ unsigned long dB;
 
 unsigned int trials;
 
+unsigned char characters[10] = {'.', 't', 'i', 'e', '5', 'R', 'o', 'n', 'a', 'l'};
+unsigned char currentCharacter = 0;
+
 sbit phase = P0^0; // 0 for training and 1 for testing
 sbit user = P0^1; // 0 for user a and 1 for user b
 sbit led = P0^2; 
@@ -45,6 +48,12 @@ void check(int feature){
 
 void readCharacter(){
 	character = _getkey();
+	
+	if (character != characters[currentCharacter])
+		return;
+	
+	currentCharacter = (currentCharacter + 1) % 10;
+	
 	flight = (overflow * 65536) + ((TH0 << 8) | TL0);
 	
 	switch (character){
